@@ -3,7 +3,7 @@ import { Card, Typography, Button, Progress } from 'antd';
 import { green, red } from '@ant-design/colors';
 import './App.css';
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
 interface QuestionCardProps {
   question: {
@@ -70,18 +70,19 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
       }}
       bordered={true}
     >
-      <Progress
-        percent={progressPercent}
-        steps={totalQuestions}
-        strokeColor={progressColorArray}
-        showInfo={false}
-      />
+      {/* Wider Progress Bar */}
+      <div style={{ width: '80%', margin: '0 auto', marginBottom: 12 }}>
+        <Progress
+          percent={progressPercent}
+          steps={totalQuestions}
+          strokeColor={progressColorArray}
+          showInfo={false}
+        />
+      </div>
 
-      <Title level={4}>
-        Question {questionNumber}/{totalQuestions}
-      </Title>
       <Text strong>{question.question}</Text>
 
+      {/* Answer Options */}
       <div className="answer-grid">
         {question.options.map((option, index) => (
           <Button
@@ -103,6 +104,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
         ))}
       </div>
 
+      {/* Next Button */}
       {showAnswer && (
         <Button
           type="primary"

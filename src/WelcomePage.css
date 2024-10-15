@@ -1,0 +1,51 @@
+/* WelcomePage.css */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+.welcome-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(-45deg, #f093fb, #f5576c, #4facfe, #00f2fe);
+  background-size: 400% 400%;
+  animation: gradientAnimation 15s ease infinite;
+}
+
+.welcome-content {
+  text-align: center;
+  animation: fadeIn 1.5s ease-in-out;
+  font-family: 'Poppins', sans-serif;
+  color: #fff;
+}
+
+.welcome-title {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.welcome-subtitle {
+  font-size: 24px;
+  margin-bottom: 40px;
+}
+
+.ant-btn-primary {
+  background-color: #fa8c16;
+  border-color: #fa8c16;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gradientAnimation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}

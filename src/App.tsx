@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Layout, ConfigProvider } from 'antd';
 import './App.css';
+import WelcomePage from './WelcomePage';
 import QuestionCard from './QuestionCard';
 import Result from './Result';
 import Confetti from 'react-confetti';
@@ -38,7 +39,7 @@ const App: React.FC = () => {
     },
     {
       question: "Jaki procent osób po FLP zostaje w GSK po jego zakończeniu?",
-      options: ["76%", "33%", "76%", "100%"],
+      options: ["76%", "33%", "54%", "100%"],
       correctIndex: 3,
     },
     {
@@ -51,10 +52,15 @@ const App: React.FC = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [quizFinished, setQuizFinished] = useState(false);
+  const [quizStarted, setQuizStarted] = useState(false); // New state
+
+  const handleStartQuiz = () => {
+    setQuizStarted(true);
+  };
 
   const handleAnswer = (isCorrect: boolean) => {
     if (isCorrect) {
-      setScore(score + 1);
+      setScore((prevScore) => prevScore + 1);
     }
   };
 
@@ -67,8 +73,8 @@ const App: React.FC = () => {
     }
   };
 
-  const { width, height } = useWindowSize(); // Dynamically get screen size
-  const shouldShowConfetti = quizFinished && score >= questions.length - 1; // Success criteria
+  const { width, height } = useWindowSize();
+  const shouldShowConfetti = quizFinished && score >= questions.length - 1;
 
   return (
     <ConfigProvider
@@ -78,52 +84,55 @@ const App: React.FC = () => {
         },
       }}
     >
-      <Layout style={{ minHeight: '100vh', position: 'relative' }}>
-        {/* Confetti Component */}
-        {shouldShowConfetti && <Confetti width={width} height={height} />}
+      {shouldShowConfetti && <Confetti width={width} height={height} />}
 
-        {/* Header */}
-        <Header
-          style={{
-            backgroundColor: '#fff',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <img
-            src="https://upload.wikimedia.org/wikipedia/en/thumb/3/32/GSK_logo_2022.svg/1200px-GSK_logo_2022.svg.png"
-            alt="Logo"
-            style={{ height: '30px' }}
-          />
-        </Header>
+      {!quizStarted ? (
+        <WelcomePage onStart={handleStartQuiz} />
+      ) : (
+        <Layout style={{ minHeight: '100vh' }}>
+          {/* Header */}
+          <Header
+            style={{
+              backgroundColor: '#fff',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <img
+              src="https://upload.wikimedia.org/wikipedia/en/thumb/3/32/GSK_logo_2022.svg/1200px-GSK_logo_2022.svg.png"
+              alt="Logo"
+              style={{ height: '30px' }}
+            />
+          </Header>
 
-        {/* Content */}
-        <Content
-          style={{
-            padding: '10px',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          {questions.length > 0 ? (
-            !quizFinished ? (
-              <QuestionCard
-                question={questions[currentQuestionIndex]}
-                questionNumber={currentQuestionIndex + 1}
-                totalQuestions={questions.length}
-                onAnswer={handleAnswer}
-                onNext={handleNext}
-              />
+          {/* Content */}
+          <Content
+            style={{
+              padding: '10px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            {questions.length > 0 ? (
+              !quizFinished ? (
+                <QuestionCard
+                  question={questions[currentQuestionIndex]}
+                  questionNumber={currentQuestionIndex + 1}
+                  totalQuestions={questions.length}
+                  onAnswer={handleAnswer}
+                  onNext={handleNext}
+                />
+              ) : (
+                <Result score={score} totalQuestions={questions.length} />
+              )
             ) : (
-              <Result score={score} totalQuestions={questions.length} />
-            )
-          ) : (
-            <p>Loading questions...</p>
-          )}
-        </Content>
-      </Layout>
+              <p>Loading questions...</p>
+            )}
+          </Content>
+        </Layout>
+      )}
     </ConfigProvider>
   );
 };
