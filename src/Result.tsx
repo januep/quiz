@@ -17,10 +17,10 @@ const Result: React.FC<ResultProps> = ({ score, totalQuestions }) => {
     <div style={{ position: 'relative', width: '100%', textAlign: 'center' }}>
       <AntResult
         status={isSuccess ? 'success' : 'error'}
-        title={isSuccess ? 'Congratulations!' : 'Better Luck Next Time!'}
+        title={isSuccess ? 'Gratulacje!' : 'Better Luck Next Time!'}
         subTitle={
           isSuccess
-            ? `You passed the quiz with a score of ${score} out of ${totalQuestions}!`
+            ? `Udało Ci się zdobyć ${score} punktów z ${totalQuestions}! Zapraszamy po odbiór nagrody!`
             : `You scored ${score} out of ${totalQuestions}. Try again to improve your score!`
         }
         extra={[
