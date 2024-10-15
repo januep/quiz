@@ -1,6 +1,6 @@
-//QuestionCard.tsx
 import React, { useState, useEffect } from 'react';
-import { Card, Typography, Button, Space } from 'antd';
+import { Card, Typography, Button } from 'antd';
+import './App.css'; // Ensure this is imported to include the CSS
 
 const { Title, Text } = Typography;
 
@@ -26,7 +26,6 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [showAnswer, setShowAnswer] = useState(false);
 
-  // Reset state when a new question is loaded
   useEffect(() => {
     setSelectedOption(null);
     setShowAnswer(false);
@@ -72,12 +71,12 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
       <Text strong>{question.question}</Text>
 
       {/* Answer Options */}
-      <Space direction="vertical" style={{ width: '100%', marginTop: '20px' }}>
+      <div className="answer-grid">
         {question.options.map((option, index) => (
           <Button
             key={index}
             type={getButtonType(index)}
-            block
+            className="answer-button"
             onClick={() => handleOptionClick(index)}
             style={getButtonStyle(index)}
             disabled={showAnswer}
@@ -85,7 +84,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
             {option}
           </Button>
         ))}
-      </Space>
+      </div>
 
       {/* Next Button */}
       {showAnswer && (
