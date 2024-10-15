@@ -1,5 +1,7 @@
 import React from 'react';
-import { Button, Result as AntResult } from 'antd';
+import { Button, Result as AntResult, Typography } from 'antd';
+
+const { Text, Link } = Typography;
 
 interface ResultProps {
   score: number;
@@ -24,11 +26,12 @@ const Result: React.FC<ResultProps> = ({ score, totalQuestions }) => {
             : `You scored ${score} out of ${totalQuestions}. Try again to improve your score!`
         }
         extra={[
-          <Button type="primary" key="restart" onClick={handleRestart}>
-            Restart Quiz
+          <Button type="default" key="restart" onClick={handleRestart}>
+            Restartuj
           </Button>,
         ]}
       />
+      <Text type="secondary">©GSK | Jan Mańczak</Text>
     </div>
   );
 };

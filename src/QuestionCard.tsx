@@ -15,6 +15,7 @@ interface QuestionCardProps {
   totalQuestions: number;
   onAnswer: (isCorrect: boolean) => void;
   onNext: () => void;
+  isAnswerShown: boolean; // New prop
 }
 
 const QuestionCard: React.FC<QuestionCardProps> = ({
@@ -23,31 +24,25 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
   totalQuestions,
   onAnswer,
   onNext,
+  isAnswerShown,
 }) => {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
-  const [showAnswer, setShowAnswer] = useState(false);
-
-  useEffect(() => {
-    setSelectedOption(null);
-    setShowAnswer(false);
-  }, [question]);
 
   const handleOptionClick = (index: number) => {
-    if (showAnswer) return;
+    if (isAnswerShown) return;
     setSelectedOption(index);
-    setShowAnswer(true);
     onAnswer(index === question.correctIndex);
   };
 
   const getButtonType = (index: number) => {
-    if (!showAnswer) return 'default';
+    if (!isAnswerShown) return 'default';
     if (index === question.correctIndex) return 'primary';
     if (index === selectedOption) return 'dashed';
     return 'default';
   };
 
   const getButtonStyle = (index: number) => {
-    if (!showAnswer) return {};
+    if (!isAnswerShown) return {};
     if (index === question.correctIndex) {
       return { borderColor: green[6], color: green[6] }; // Green
     }
@@ -57,9 +52,10 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
     return {};
   };
 
-  const progressPercent = ((questionNumber - 1) / totalQuestions) * 100;
-  const progressColorArray = new Array(totalQuestions).fill(green[6]);
-  progressColorArray[questionNumber - 1] = red[5]; // For current question
+  // Reset selected option when question changes
+  useEffect(() => {
+    setSelectedOption(null);
+  }, [question]);
 
   return (
     <Card
@@ -73,9 +69,9 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
       {/* Wider Progress Bar */}
       <div style={{ width: '80%', margin: '0 auto', marginBottom: 12 }}>
         <Progress
-          percent={progressPercent}
+          percent={((questionNumber - 1) / totalQuestions) * 100}
           steps={totalQuestions}
-          strokeColor={progressColorArray}
+          strokeColor={green[6]}
           showInfo={false}
         />
       </div>
@@ -97,7 +93,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
               padding: '8px',
               whiteSpace: 'normal',
             }}
-            disabled={showAnswer}
+            disabled={isAnswerShown}
           >
             {option}
           </Button>
@@ -105,7 +101,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
       </div>
 
       {/* Next Button */}
-      {showAnswer && (
+      {isAnswerShown && (
         <Button
           type="primary"
           block

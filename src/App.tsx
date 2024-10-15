@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Layout, ConfigProvider } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Layout, ConfigProvider, Progress } from 'antd';
 import './App.css';
 import WelcomePage from './WelcomePage';
 import QuestionCard from './QuestionCard';
@@ -52,26 +52,45 @@ const App: React.FC = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [quizFinished, setQuizFinished] = useState(false);
-  const [quizStarted, setQuizStarted] = useState(false); // New state
+  const [quizStarted, setQuizStarted] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(15);
+  const [isAnswerShown, setIsAnswerShown] = useState(false); // New state
 
   const handleStartQuiz = () => {
     setQuizStarted(true);
+    setTimeLeft(15);
+    setIsAnswerShown(false);
   };
 
   const handleAnswer = (isCorrect: boolean) => {
     if (isCorrect) {
       setScore((prevScore) => prevScore + 1);
     }
+    setIsAnswerShown(true); // Stop timer and show answer
   };
 
-  const handleNext = () => {
+  const goToNextQuestion = () => {
     const nextIndex = currentQuestionIndex + 1;
     if (nextIndex < questions.length) {
       setCurrentQuestionIndex(nextIndex);
+      setTimeLeft(15); // Reset timer
+      setIsAnswerShown(false); // Reset answer visibility
     } else {
       setQuizFinished(true);
     }
   };
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (quizStarted && !quizFinished && !isAnswerShown) {
+      if (timeLeft > 0) {
+        timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
+      } else {
+        handleAnswer(false); // Time's up, mark as incorrect
+      }
+    }
+    return () => clearTimeout(timer);
+  }, [timeLeft, quizStarted, quizFinished, isAnswerShown]);
 
   const { width, height } = useWindowSize();
   const shouldShowConfetti = quizFinished && score >= questions.length - 1;
@@ -85,28 +104,44 @@ const App: React.FC = () => {
       }}
     >
       {shouldShowConfetti && <Confetti width={width} height={height} />}
-
       {!quizStarted ? (
         <WelcomePage onStart={handleStartQuiz} />
       ) : (
         <Layout style={{ minHeight: '100vh' }}>
-          {/* Header */}
           <Header
             style={{
               backgroundColor: '#fff',
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
+              borderBottomLeftRadius: '20px',
+              borderBottomRightRadius: '20px',
+              position: 'relative',
+              zIndex: 2,
             }}
           >
             <img
               src="https://upload.wikimedia.org/wikipedia/en/thumb/3/32/GSK_logo_2022.svg/1200px-GSK_logo_2022.svg.png"
               alt="Logo"
-              style={{ height: '30px' }}
+              style={{
+                height: '30px',
+                // filter: 'drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.4))',
+              }}
             />
           </Header>
 
-          {/* Content */}
+          {/* Timer Progress Bar */}
+          {quizStarted && !quizFinished && (
+            <div style={{ padding: '0 15px', marginTop: '10px' }}>
+              <Progress
+                percent={(timeLeft / 15) * 100}
+                showInfo={false}
+                strokeColor="#fa8c16"
+                status="active"
+              />
+            </div>
+          )}
+
           <Content
             style={{
               padding: '10px',
@@ -122,7 +157,8 @@ const App: React.FC = () => {
                   questionNumber={currentQuestionIndex + 1}
                   totalQuestions={questions.length}
                   onAnswer={handleAnswer}
-                  onNext={handleNext}
+                  onNext={goToNextQuestion}
+                  isAnswerShown={isAnswerShown} // Pass to QuestionCard
                 />
               ) : (
                 <Result score={score} totalQuestions={questions.length} />
