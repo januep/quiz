@@ -64,11 +64,11 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
   return (
     <Card
       style={{
-        maxWidth: '600px',
+        maxWidth: '1080px',
         width: '100%',
         textAlign: 'center',
       }}
-      bordered={false}
+      bordered={true}
     >
       {/* Progress Component */}
       <Progress
@@ -96,7 +96,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
           >
             {option}
           </Button>
-        ))} $usos.11J5942m
+        ))}
       </div>
 
       {/* Next Button */}

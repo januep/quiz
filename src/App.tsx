@@ -13,17 +13,48 @@ interface Question {
 }
 
 const App: React.FC = () => {
-  const [questions, setQuestions] = useState<Question[]>([]);
+  const [questions, setQuestions] = useState<Question[]>([
+    {
+      question: "Ile lat temu został założony A-Team?",
+      options: ["6", "8", "12", "15"],
+      correctIndex: 2, // poprawna odpowiedź to A
+    },
+    {
+      question: "Na jaki maksymalny okres zatrudniani są stażyści? (miesiące)",
+      options: ["12", "18", "6", "24"],
+      correctIndex: 1, // poprawna odpowiedź to A
+    },
+    {
+      question: "Co oznacza skrót FLP?",
+      options: ["Former Lame People", "Fantastic Leaders Poland", "First Leaders Performance", "Future Leaders Programme"],
+      correctIndex: 3, // poprawna odpowiedź to A
+    },
+    {
+      question: "Ile lat trwa FLP?",
+      options: ["2 lata", "1,5 roku", "3 lata", "rok"],
+      correctIndex: 0, // poprawna odpowiedź to A
+    },
+    {
+      question: "Jaki procent osób po FLP zostaje w GSK po jego zakończeniu?",
+      options: ["76%", "33%", "76%", "100%"],
+      correctIndex: 3, // poprawna odpowiedź to A
+    },
+    {
+      question: "Ile spotkań A-team odbyło się do tej pory?",
+      options: ["10", "600", "150", "320"],
+      correctIndex: 1, // poprawna odpowiedź to A
+    },
+  ]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [quizFinished, setQuizFinished] = useState(false);
 
-  useEffect(() => {
-    // Fetch questions from the JSON file
-    fetch('/questions.json')
-      .then((response) => response.json())
-      .then((data) => setQuestions(data));
-  }, []);
+  // useEffect(() => {
+  //   // Fetch questions from the JSON file
+  //   fetch('/questions.json')
+  //     .then((response) => response.json())
+  //     .then((data) => setQuestions(data));
+  // }, []);
 
   const handleAnswer = (isCorrect: boolean) => {
     if (isCorrect) {
@@ -56,16 +87,21 @@ const App: React.FC = () => {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            
+
           }}
         >
-          <img src="/Logo.png" alt="Logo" style={{ height: '70px' }} />
+          {/* <img src="/Logo.png" alt="Logo" style={{ height: '70px' }} /> */}
+          <img
+            src="https://upload.wikimedia.org/wikipedia/en/thumb/3/32/GSK_logo_2022.svg/1200px-GSK_logo_2022.svg.png"
+            alt="Logo"
+            style={{ height: '30px' }}
+          />
         </Header>
 
         {/* Content */}
         <Content
           style={{
-            padding: '20px',
+            padding: '10px',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
