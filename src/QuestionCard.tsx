@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+//QuestionCard.tsx
+import React, { useState, useEffect } from 'react';
 import { Card, Typography, Button, Space } from 'antd';
 
 const { Title, Text } = Typography;
@@ -24,6 +25,12 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
 }) => {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [showAnswer, setShowAnswer] = useState(false);
+
+  // Reset state when a new question is loaded
+  useEffect(() => {
+    setSelectedOption(null);
+    setShowAnswer(false);
+  }, [question]);
 
   const handleOptionClick = (index: number) => {
     if (showAnswer) return;
@@ -88,7 +95,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
           style={{ marginTop: '20px' }}
           onClick={onNext}
         >
-          Next
+          {questionNumber < totalQuestions ? 'Next' : 'See Results'}
         </Button>
       )}
     </Card>

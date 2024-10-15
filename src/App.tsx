@@ -52,13 +52,14 @@ const App: React.FC = () => {
         {/* Header */}
         <Header
           style={{
-            backgroundColor: '#282c34',
+            backgroundColor: '#fff',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
+            
           }}
         >
-          <img src="/Logo.png" alt="Logo" style={{ height: '40px' }} />
+          <img src="/Logo.png" alt="Logo" style={{ height: '70px' }} />
         </Header>
 
         {/* Content */}
