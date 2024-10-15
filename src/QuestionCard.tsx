@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Typography, Button, Progress } from 'antd';
 import { green, red } from '@ant-design/colors';
-import './App.css'; // Ensure CSS is imported
+import './App.css';
 
 const { Title, Text } = Typography;
 
@@ -70,7 +70,6 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
       }}
       bordered={true}
     >
-      {/* Progress Component */}
       <Progress
         percent={progressPercent}
         steps={totalQuestions}
@@ -83,7 +82,6 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
       </Title>
       <Text strong>{question.question}</Text>
 
-      {/* Answer Options */}
       <div className="answer-grid">
         {question.options.map((option, index) => (
           <Button
@@ -91,7 +89,13 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
             type={getButtonType(index)}
             className="answer-button"
             onClick={() => handleOptionClick(index)}
-            style={getButtonStyle(index)}
+            style={{
+              ...getButtonStyle(index),
+              minHeight: '60px',
+              fontSize: '16px',
+              padding: '8px',
+              whiteSpace: 'normal',
+            }}
             disabled={showAnswer}
           >
             {option}
@@ -99,7 +103,6 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
         ))}
       </div>
 
-      {/* Next Button */}
       {showAnswer && (
         <Button
           type="primary"

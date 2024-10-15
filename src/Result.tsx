@@ -1,7 +1,5 @@
 import React from 'react';
-import { Card, Typography, Button } from 'antd';
-
-const { Title, Text } = Typography;
+import { Button, Result as AntResult } from 'antd';
 
 interface ResultProps {
   score: number;
@@ -13,28 +11,25 @@ const Result: React.FC<ResultProps> = ({ score, totalQuestions }) => {
     window.location.reload(); // Simple way to restart the quiz
   };
 
+  const isSuccess = score >= totalQuestions - 1; // Success if score is totalQuestions or one less
+
   return (
-    <Card
-      style={{
-        maxWidth: '600px',
-        width: '100%',
-        textAlign: 'center',
-      }}
-      bordered={false}
-    >
-      <Title level={3}>Quiz Completed!</Title>
-      <Text>
-        You scored {score} out of {totalQuestions}.
-      </Text>
-      <Button
-        type="primary"
-        block
-        style={{ marginTop: '20px' }}
-        onClick={handleRestart}
-      >
-        Restart Quiz
-      </Button>
-    </Card>
+    <div style={{ position: 'relative', width: '100%', textAlign: 'center' }}>
+      <AntResult
+        status={isSuccess ? 'success' : 'error'}
+        title={isSuccess ? 'Congratulations!' : 'Better Luck Next Time!'}
+        subTitle={
+          isSuccess
+            ? `You passed the quiz with a score of ${score} out of ${totalQuestions}!`
+            : `You scored ${score} out of ${totalQuestions}. Try again to improve your score!`
+        }
+        extra={[
+          <Button type="primary" key="restart" onClick={handleRestart}>
+            Restart Quiz
+          </Button>,
+        ]}
+      />
+    </div>
   );
 };
 
