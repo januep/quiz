@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Typography, Button } from 'antd';
-import './App.css'; // Ensure this is imported to include the CSS
+import { Card, Typography, Button, Progress } from 'antd';
+import { green, red } from '@ant-design/colors';
+import './App.css'; // Ensure CSS is imported
 
 const { Title, Text } = Typography;
 
@@ -48,13 +49,17 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
   const getButtonStyle = (index: number) => {
     if (!showAnswer) return {};
     if (index === question.correctIndex) {
-      return { borderColor: '#52c41a', color: '#52c41a' }; // Green
+      return { borderColor: green[6], color: green[6] }; // Green
     }
     if (index === selectedOption) {
-      return { borderColor: '#ff4d4f', color: '#ff4d4f' }; // Red
+      return { borderColor: red[5], color: red[5] }; // Red
     }
     return {};
   };
+
+  const progressPercent = ((questionNumber - 1) / totalQuestions) * 100;
+  const progressColorArray = new Array(totalQuestions).fill(green[6]);
+  progressColorArray[questionNumber - 1] = red[5]; // For current question
 
   return (
     <Card
@@ -65,6 +70,14 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
       }}
       bordered={false}
     >
+      {/* Progress Component */}
+      <Progress
+        percent={progressPercent}
+        steps={totalQuestions}
+        strokeColor={progressColorArray}
+        showInfo={false}
+      />
+
       <Title level={4}>
         Question {questionNumber}/{totalQuestions}
       </Title>
