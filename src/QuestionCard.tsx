@@ -96,7 +96,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
           >
             {option}
           </Button>
-        ))}
+        ))} $usos.11J5942m
       </div>
 
       {/* Next Button */}
