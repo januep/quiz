@@ -42,7 +42,7 @@ const WelcomePage: React.FC<WelcomePageProps> = ({ onStart }) => {
                     <span>FLP & A-team</span>
                     <span>QUIZ</span>
                 </h1>
-                <p className="welcome-subtitle">Zgarnij cukierka i naklejkę!</p>
+                <p className="welcome-subtitle">Wykaż się wiedzą i zgarnij pieczątkę!</p>
                 <Button type="default" ghost size="large" onClick={onStart}>
                     Start
                 </Button>

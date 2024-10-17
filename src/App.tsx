@@ -22,30 +22,35 @@ const App: React.FC = () => {
       options: ["6", "8", "12", "15"],
       correctIndex: 2,
     },
-    {
-      question: "Na jaki maksymalny okres zatrudniani są stażyści? (miesiące)",
-      options: ["12", "18", "6", "24"],
-      correctIndex: 1,
-    },
+    // {
+    //   question: "Na jaki maksymalny okres zatrudniani są stażyści? (miesiące)",
+    //   options: ["12", "18", "6", "24"],
+    //   correctIndex: 1,
+    // },
     {
       question: "Co oznacza skrót FLP?",
       options: ["Former Lame People", "Fantastic Leaders Poland", "First Leaders Performance", "Future Leaders Programme"],
       correctIndex: 3,
     },
     {
-      question: "Ile lat trwa FLP?",
-      options: ["2 lata", "1,5 roku", "3 lata", "rok"],
-      correctIndex: 0,
-    },
-    {
-      question: "Jaki procent osób po FLP zostaje w GSK po jego zakończeniu?",
-      options: ["76%", "33%", "54%", "100%"],
-      correctIndex: 3,
-    },
-    {
       question: "Ile spotkań A-team odbyło się do tej pory?",
       options: ["10", "600", "150", "320"],
       correctIndex: 1,
+    },
+    // {
+    //   question: "Ile lat trwa FLP?",
+    //   options: ["2 lata", "1,5 roku", "3 lata", "rok"],
+    //   correctIndex: 0,
+    // },
+    // {
+    //   question: "Jaki procent osób po FLP zostaje w GSK po jego zakończeniu?",
+    //   options: ["76%", "33%", "54%", "100%"],
+    //   correctIndex: 3,
+    // },
+    {
+      question: "Jaka była poprawna odpowiedź na pierwsze pytanie?",
+      options: ["Future Leaders Programme", "6", "12", "600"],
+      correctIndex: 2,
     },
   ]);
 
@@ -108,30 +113,30 @@ const App: React.FC = () => {
         <WelcomePage onStart={handleStartQuiz} />
       ) : (
         <Layout style={{ minHeight: '100vh' }}>
-          <Header
-            style={{
-              backgroundColor: '#fff',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderBottomLeftRadius: '20px',
-              borderBottomRightRadius: '20px',
-              position: 'relative',
-              zIndex: 2,
-            }}
-          >
-            <img
-              src="https://upload.wikimedia.org/wikipedia/en/thumb/3/32/GSK_logo_2022.svg/1200px-GSK_logo_2022.svg.png"
-              alt="Logo"
+          {/* Użyj nagłówka tylko podczas quizu */}
+          {!quizFinished && (
+            <Header
               style={{
-                height: '30px',
-                // filter: 'drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.4))',
+                backgroundColor: '#fff',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderBottomLeftRadius: '20px',
+                borderBottomRightRadius: '20px',
+                position: 'relative',
+                zIndex: 2,
               }}
-            />
-          </Header>
+            >
+              <img
+                src="https://upload.wikimedia.org/wikipedia/en/thumb/3/32/GSK_logo_2022.svg/1200px-GSK_logo_2022.svg.png"
+                alt="Logo"
+                style={{ height: '30px' }}
+              />
+            </Header>
+          )}
 
-          {/* Timer Progress Bar */}
-          {quizStarted && !quizFinished && (
+          {/* Pasek postępu */}
+          {!quizFinished && quizStarted && (
             <div style={{ padding: '0 15px', marginTop: '10px' }}>
               <Progress
                 percent={(timeLeft / 15) * 100}
@@ -148,6 +153,11 @@ const App: React.FC = () => {
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
+              height: '100vh', // Rozciąga zawartość na pełen ekran
+              background: quizFinished
+                ? 'linear-gradient(315deg, #ff9a76 3%, #ff6f42 38%, #ff3e1d 68%, #ffbd80 98%)'
+                : 'none',
+              animation: quizFinished ? 'gradient 15s ease infinite' : 'none',
             }}
           >
             {questions.length > 0 ? (
