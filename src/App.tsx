@@ -18,41 +18,29 @@ interface Question {
 const App: React.FC = () => {
   const [questions, setQuestions] = useState<Question[]>([
     {
-      question: "Ile lat temu został założony A-Team?",
+      question: "How many years ago was the A-Team founded?",
       options: ["6", "8", "12", "15"],
       correctIndex: 2,
     },
-    // {
-    //   question: "Na jaki maksymalny okres zatrudniani są stażyści? (miesiące)",
-    //   options: ["12", "18", "6", "24"],
-    //   correctIndex: 1,
-    // },
+    
     {
-      question: "Co oznacza skrót FLP?",
+      question: "What does the abbreviation FLP stand for?",
       options: ["Former Lame People", "Fantastic Leaders Poland", "First Leaders Performance", "Future Leaders Programme"],
       correctIndex: 3,
     },
     {
-      question: "Ile spotkań A-team odbyło się do tej pory?",
+      question: "How many A-Team meetings have been held so far?",
       options: ["10", "600", "150", "320"],
       correctIndex: 1,
     },
-    // {
-    //   question: "Ile lat trwa FLP?",
-    //   options: ["2 lata", "1,5 roku", "3 lata", "rok"],
-    //   correctIndex: 0,
-    // },
-    // {
-    //   question: "Jaki procent osób po FLP zostaje w GSK po jego zakończeniu?",
-    //   options: ["76%", "33%", "54%", "100%"],
-    //   correctIndex: 3,
-    // },
+     
     {
-      question: "Jaka była poprawna odpowiedź na pierwsze pytanie?",
+      question: "What was the correct answer to the first question?",
       options: ["Future Leaders Programme", "6", "12", "600"],
       correctIndex: 2,
     },
-  ]);
+  ]
+  );
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);

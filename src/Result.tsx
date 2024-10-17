@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Result as AntResult, Typography } from 'antd';
-import { TrophyOutlined } from '@ant-design/icons';
+import { FrownOutlined, TrophyOutlined } from '@ant-design/icons';
 
 const { Text, Link } = Typography;
 
@@ -20,16 +20,22 @@ const Result: React.FC<ResultProps> = ({ score, totalQuestions }) => {
         <div style={{ position: 'relative', width: '100%', textAlign: 'center' }}>
             <AntResult
                 status={isSuccess ? 'success' : 'error'}
-                icon={<TrophyOutlined style={{ fontSize: '64px', color: isSuccess ? '#faad14' : '#ff4d4f' }} />} // Zwiększono fontSize i dodano kolor
-                title={isSuccess ? 'Gratulacje!' : 'Better Luck Next Time!'}
+                icon={
+                    isSuccess ? (
+                        <TrophyOutlined style={{ fontSize: '64px', color: '#faad14' }} />
+                    ) : (
+                        <FrownOutlined style={{ fontSize: '64px', color: '#111' }} /> // Sad icon for failure
+                    )
+                }
+                title={isSuccess ? 'Congratulations!' : 'Better Luck Next Time!'}
                 subTitle={
                     isSuccess
-                        ? `Udało Ci się zdobyć ${score} punktów z ${totalQuestions}! Zapraszamy po odbiór nagrody!`
+                        ? `You scored ${score} points out of ${totalQuestions}! Claim your reward!`
                         : `You scored ${score} out of ${totalQuestions}. Try again to improve your score!`
                 }
                 extra={[
-                    <Button type="default" key="restart" onClick={handleRestart}>
-                        Restartuj
+                    <Button type="default" ghost key="restart" onClick={handleRestart}>
+                        Restart
                     </Button>,
                 ]}
             />
